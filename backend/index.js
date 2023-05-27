@@ -4,12 +4,18 @@ const mongoose = require("mongoose");
 const { Server } = require("socket.io");
 const session = require("express-session");
 const helmet = require("helmet");
-
+const redisClient = require("./redis");
+const RedisStore = require("connect-redis").default;
 //env
 require("dotenv").config();
 
 const app = express();
 const server = require("http").createServer(app);
+
+let redisStore = new RedisStore({
+  client: redisClient,
+  prefix: "chatapp",
+});
 
 //db connection
 mongoose
@@ -41,6 +47,7 @@ app.use(
     credentials: true,
     name: "sid",
     resave: false,
+    store: redisStore,
     saveUninitialized: false,
     cookie: {
       secure: process.env.ENVIRONMENT === "production",

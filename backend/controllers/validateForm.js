@@ -11,7 +11,7 @@ const formSchema = Yup.object({
     .max(28, "too long Password"),
 });
 
-const validateForm = (req, res) => {
+const validateForm = (req, res, next) => {
   const formData = req.body;
   formSchema
     .validate(formData)
@@ -22,6 +22,7 @@ const validateForm = (req, res) => {
     .then((valid) => {
       if (valid) {
         console.log("form is good");
+        next();
       } else {
         res.status(422).send();
       }

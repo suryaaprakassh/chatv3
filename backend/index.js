@@ -2,20 +2,12 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const { Server } = require("socket.io");
-const session = require("express-session");
 const helmet = require("helmet");
-const redisClient = require("./redis");
-const RedisStore = require("connect-redis").default;
 //env
 require("dotenv").config();
 
 const app = express();
 const server = require("http").createServer(app);
-
-let redisStore = new RedisStore({
-  client: redisClient,
-  prefix: "chatapp",
-});
 
 //db connection
 mongoose
@@ -25,6 +17,8 @@ mongoose
 
 //custom
 const authRouter = require("./routers/routers");
+const { sessionMiddleWare } = require("./controllers/serverController");
+const { socketWrap } = require("./controllers/serverController");
 
 const io = new Server(server, {
   cors: {
@@ -41,22 +35,7 @@ app.use(
     credentials: true,
   })
 );
-app.use(
-  session({
-    secret: process.env.SECRET,
-    credentials: true,
-    name: "sid",
-    resave: false,
-    store: redisStore,
-    saveUninitialized: false,
-    cookie: {
-      secure: process.env.ENVIRONMENT === "production",
-      httpOnly: true,
-      sameSite: process.env.ENVIRONMENT === "production" ? "none" : "lax",
-      expires: 1000 * 60 * 60 * 24,
-    },
-  })
-);
+app.use(sessionMiddleWare);
 app.use(express.json());
 
 //routers
@@ -66,7 +45,12 @@ app.get("/", (req, res) => {
   res.send("okie");
 });
 
-io.on("connect", (socket) => {});
+//socket io middleware
+io.use(socketWrap(sessionMiddleWare));
+
+io.on("connect", (socket) => {
+  console.log(socket.request.session.user.username);
+});
 
 server.listen(4000, () => {
   console.log("listening on port 4000");

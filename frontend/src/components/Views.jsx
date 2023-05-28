@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Login from "./login/Login";
 import Signup from "./login/Signup";
-import Home from "./Home";
+import Home from "../components/home/Home";
 import PrivateRoutes from "./PrivateViews";
 import { useContext } from "react";
 import { AccountContext } from "./AccountContext";

@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const users = require("../schema");
+const { v4: uuid } = require("uuid");
 
 module.exports.checkSession = (req, res) => {
   if (req.session.user && req.session.user.username) {
@@ -25,6 +26,7 @@ module.exports.handleLogin = async (req, res) => {
     req.session.user = {
       username: req.body.username,
       id: potentialLogin._id,
+      userId: potentialLogin.userId,
     };
     res.json({ loggedIn: true, username: req.body.username });
   } else {
@@ -44,11 +46,13 @@ module.exports.handleSignup = async (req, res) => {
   const newUser = await users.create({
     username: req.body.username,
     password: hashedPass,
+    userId: uuid(),
   });
   await newUser.save();
   req.session.user = {
     username: req.body.username,
     id: newUser._id,
+    userId: newUser.userId,
   };
   res.json({ loggedIn: true, username: req.body.username });
 };

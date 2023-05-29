@@ -19,10 +19,11 @@ mongoose
 const authRouter = require("./routers/routers");
 const { sessionMiddleWare } = require("./controllers/serverController");
 const { socketWrap } = require("./controllers/serverController");
+const { authorizeUser, addFriend } = require("./controllers/socketControllers");
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173/",
+    origin: true,
     credentials: true,
   },
 });
@@ -47,9 +48,14 @@ app.get("/", (req, res) => {
 
 //socket io middleware
 io.use(socketWrap(sessionMiddleWare));
+io.use(authorizeUser);
 
 io.on("connect", (socket) => {
-  console.log(socket.request.session.user.username);
+  console.log(socket.request.session.user.username, socket.id, socket.user);
+
+  socket.on("add_friend", (friendName, callback) => {
+    addFriend(socket, friendName, callback);
+  });
 });
 
 server.listen(4000, () => {

@@ -10,7 +10,6 @@ const useSocketSetup = (setFriendList) => {
     socket.on("friends",(data)=>{
       setFriendList([...data])
     })
-
     socket.on("connect_error", () => {
       setUser({ loggedIn: false });
     });

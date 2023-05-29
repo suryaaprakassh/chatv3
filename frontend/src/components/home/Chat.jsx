@@ -1,15 +1,17 @@
 import { TabPanel, TabPanels, VStack, Text } from "@chakra-ui/react";
 import { useContext } from "react";
 import { FriendContext } from "./Home";
+import {v4 as uuid} from "uuid"
 
 function Chat() {
   const { friendList } = useContext(FriendContext);
   return (
     <VStack>
-      {friendList.length > 0 ? (
+        {friendList.length > 0 ? (
         <TabPanels>
-          <TabPanel>Friend 1</TabPanel>
-          <TabPanel>Friend 2</TabPanel>
+          {
+            friendList.map(friend=><TabPanel key={uuid}>{friend.username}</TabPanel>)
+          }
         </TabPanels>
       ) : (
         <TabPanels justify="center" pt="5rem" textAlign="center" fontSize="lg">

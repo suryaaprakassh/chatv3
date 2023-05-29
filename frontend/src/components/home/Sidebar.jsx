@@ -29,7 +29,7 @@ function Sidebar() {
           </Button>
         </HStack>
         <Divider />
-        {friendList.map((friend) => (
+        {friendList && friendList.map((friend) => (
           <HStack as={Tab} key={uuid()}>
             <Circle
               bg={friend.connected ? "green.500" : "red.500"}

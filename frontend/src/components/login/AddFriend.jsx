@@ -40,7 +40,11 @@ function AddFriend({ isOpen, onClose }) {
       socket.emit("add_friend", values.friendName, ({ errorMsg, done }) => {
         if (done) {
           setFriendList((prev) => {
-            [...prev, { username: values.friendName, connected: false }];
+                  if(prev){
+                    return [...prev,{username:values.friendName,connected:false}]
+                  }else{
+                    return [{username:values.friendName,connected:false}]
+                  }
           });
           closeModal();
           return;

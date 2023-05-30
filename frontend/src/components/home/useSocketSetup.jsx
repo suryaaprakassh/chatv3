@@ -7,15 +7,28 @@ const useSocketSetup = (setFriendList) => {
   useEffect(() => {
     socket.connect();
 
-    socket.on("friends",(data)=>{
-      setFriendList([...data])
-    })
+    socket.on("friends", (data) => {
+      console.log(data);
+      setFriendList([...data]);
+    });
+    socket.on("connected", (status, username) => {
+      setFriendList((prev) =>
+        [...prev].map((f) => {
+          if (f.username == username) {
+            f.connected = status;
+          }
+          return f;
+        })
+      );
+    });
     socket.on("connect_error", () => {
       setUser({ loggedIn: false });
     });
+
     return () => {
       socket.off("connect_error");
-      socket.off("friends")
+      socket.off("friends");
+      socket.off("connected");
     };
   }, [setUser]);
 };

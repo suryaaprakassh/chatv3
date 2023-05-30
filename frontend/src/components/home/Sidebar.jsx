@@ -29,16 +29,17 @@ function Sidebar() {
           </Button>
         </HStack>
         <Divider />
-        {friendList && friendList.map((friend) => (
-          <HStack as={Tab} key={uuid()}>
-            <Circle
-              bg={friend.connected ? "green.500" : "red.500"}
-              w="15px"
-              h="15px"
-            />
-            <Text>{friend.username}</Text>
-          </HStack>
-        ))}
+        {friendList &&
+          friendList.map((friend) => (
+            <HStack as={Tab} key={uuid()}>
+              <Circle
+                bg={friend.connected === "true" ? "green.500" : "red.500"}
+                w="15px"
+                h="15px"
+              />
+              <Text>{friend.username}</Text>
+            </HStack>
+          ))}
       </VStack>
       <AddFriend isOpen={isOpen} onClose={onClose} />
     </>

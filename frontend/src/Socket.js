@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 
-const socket = new io("http://localhost:4000", {
+const socket = new io("http://localhost:4040", {
   autoConnect: false,
   withCredentials: true,
 });

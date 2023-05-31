@@ -26,6 +26,8 @@ const {
   onDisconnect,
 } = require("./controllers/socketControllers");
 
+const handleDm=require("./controllers/handleDm")
+
 const io = new Server(server, {
   cors: {
     origin: true,
@@ -61,11 +63,16 @@ io.on("connect", (socket) => {
     addFriend(socket, friendName, callback);
   });
 
+socket.on("dm",(message)=>{
+    console.log(socket.user,"He is the user")
+    handleDm(socket,message)
+});
+
   socket.on("disconnecting", () => {
     onDisconnect(socket);
   });
 });
 
-server.listen(4000, () => {
-  console.log("listening on port 4000");
+server.listen(4040, () => {
+  console.log("listening on port 4040");
 });

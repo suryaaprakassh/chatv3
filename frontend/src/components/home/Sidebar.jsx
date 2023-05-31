@@ -22,7 +22,7 @@ function Sidebar() {
   return (
     <>
       <VStack py="1.4rem">
-        <HStack justify="space-around" w="100%">
+        <HStack justify="space-around" w="100%" px="1rem">
           <Heading size="md">Add Friend</Heading>
           <Button onClick={onOpen}>
             <ChatIcon />

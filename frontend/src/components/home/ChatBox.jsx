@@ -30,7 +30,7 @@ const ChatBox = ({ userId }) => {
 					size="lg"
 					autoComplete="off"
 				/>
-				<Button type="submit" size="lg" colorScheme="teal" disabled>
+				<Button type="submit" size="lg" colorScheme="teal">
 					Send
 				</Button>
 			</HStack>

@@ -92,8 +92,6 @@ module.exports.onDisconnect = async (socket) => {
 		data.map((friend) => friend.userId)
 	);
 	socket.to(friendRooms).emit("connected", "false", socket.user.username);
-	// send event to all friends that the mf has disconnected
-	// TODO
 };
 
 const parseFriendList = async (friendList) => {

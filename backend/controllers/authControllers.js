@@ -10,10 +10,10 @@ module.exports.checkSession = (req, res) => {
   }
 };
 
-module.exports.handleLogout= async(req,res)=>{
+module.exports.handleLogout = async (req, res) => {
   req.session.destroy();
-  res.status(200).send()
-}
+  res.status(200).send();
+};
 
 module.exports.handleLogin = async (req, res) => {
   const potentialLogin = await users.findOne({ username: req.body.username });
@@ -50,7 +50,7 @@ module.exports.handleSignup = async (req, res) => {
   const hashedPass = await bcrypt.hash(req.body.password, 10);
   const newUser = await users.create({
     username: req.body.username,
-    email:req.body.email,
+    email: req.body.email,
     password: hashedPass,
     userId: uuid(),
   });

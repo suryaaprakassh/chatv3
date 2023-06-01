@@ -19,7 +19,7 @@ function Home() {
 				h="100vh"
 				as={Tabs}
 				onChange={(index) => {
-					setSelected(()=>friendList[index].userId);
+					setSelected(index);
 				}}>
 				<GridItem colSpan="3" borderRight="1px solid gray">
 					<Sidebar />

@@ -1,5 +1,4 @@
 import { Formik, Form, Field } from "formik";
-import * as Yup from "yup";
 import { Button, HStack, Input } from "@chakra-ui/react";
 import socket from "../../Socket";
 import { useContext } from "react";
@@ -10,6 +9,9 @@ const ChatBox = ({ userId }) => {
 		<Formik
 			initialValues={{ message: "" }}
 			onSubmit={(values, action) => {
+                if(values.message.length<1 || values.message.length>255){
+                    return
+                }
 				const message = {
 					from: null,
 					to: userId?.userId,
@@ -19,9 +21,7 @@ const ChatBox = ({ userId }) => {
 				setMessages((prevMsgs) => [message, ...prevMsgs]);
 				action.resetForm();
 			}}
-			validationSchema={Yup.object({
-				message: Yup.string().min(1).max(255),
-			})}>
+        >
 			<HStack as={Form} w="100%" p="1.4rem">
 				<Input
 					as={Field}
@@ -30,7 +30,7 @@ const ChatBox = ({ userId }) => {
 					size="lg"
 					autoComplete="off"
 				/>
-				<Button type="submit" size="lg" colorScheme="teal">
+				<Button type="submit" size="lg" colorScheme="teal" disabled>
 					Send
 				</Button>
 			</HStack>

@@ -64,7 +64,6 @@ io.on("connect", (socket) => {
   });
 
 socket.on("dm",(message)=>{
-    console.log(socket.user,"He is the user")
     handleDm(socket,message)
 });
 

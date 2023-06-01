@@ -23,7 +23,7 @@ function Chat({ userId }) {
 							as={TabPanel}
 							key={uuid()}
 							w="100%">
-                        <div ref={bottomDiv} style={{background:"red",height:"2rem" ,width:"2rem"}} id="test"/>
+                        <div ref={bottomDiv} />
 							{messages
 								.filter(
 									(msg) =>

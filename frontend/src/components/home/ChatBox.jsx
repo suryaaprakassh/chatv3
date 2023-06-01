@@ -22,7 +22,7 @@ const ChatBox = ({ userId }) => {
 				action.resetForm();
 			}}
         >
-			<HStack as={Form} w="100%" p="1.4rem">
+			<HStack as={Form} w="100%" p="1.4rem" >
 				<Input
 					as={Field}
 					name="message"

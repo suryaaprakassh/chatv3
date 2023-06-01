@@ -74,6 +74,7 @@ module.exports.addFriend = async (socket, friendName, callback) => {
 	callback({ done: true });
 };
 
+
 module.exports.onDisconnect = async (socket) => {
 	await redisClient.hSet(
 		`userid:${socket.user.username}`,

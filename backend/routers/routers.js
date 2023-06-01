@@ -11,4 +11,6 @@ router
 
 router.post("/signup", validateForm, rateLimitter, authController.handleSignup);
 
+router.get("/logout",authController.handleLogout)
+
 module.exports = router;

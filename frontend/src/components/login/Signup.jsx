@@ -21,20 +21,25 @@ function Login() {
   const formik = useFormik({
     initialValues: {
       username: "",
-      password: "",
+      email: "",
+      initialpass: "",
+      confirmpass:"",
     },
     validationSchema: Yup.object({
       username: Yup.string()
         .required("User Name required")
         .min(6, " short username")
         .max(28, "too long username"),
-      password: Yup.string()
+      email: Yup.string().email().required("Email is not valid"),
+      initialpass: Yup.string()
         .required("Password required")
         .min(6, " short Password")
         .max(28, "too long Password"),
+      confirmpass:Yup.string().oneOf([Yup.ref("initialpass"),null],"Password must match"),
     }),
     onSubmit: (values, action) => {
       const vals = { ...values };
+      vals.password= values.initialpass;
       action.resetForm();
       fetch("http://localhost:4040/auth/signup", {
         method: "POST",
@@ -73,15 +78,13 @@ function Login() {
       justify="center"
       h="100vh"
       spacing="1rem"
-      onSubmit={formik.handleSubmit}
-    >
+      onSubmit={formik.handleSubmit}>
       <Heading>Signup</Heading>
       <Text as="p" color="red.500">
         {error}
       </Text>
       <FormControl
-        isInvalid={formik.errors.username && formik.touched.username}
-      >
+        isInvalid={formik.errors.username && formik.touched.username}>
         <FormLabel fontSize="lg">Username</FormLabel>
         <Input
           name="username"
@@ -96,27 +99,55 @@ function Login() {
         <FormErrorMessage>{formik.errors.username}</FormErrorMessage>
       </FormControl>
       <FormControl
-        isInvalid={formik.errors.password && formik.touched.password}
-      >
-        <FormLabel fontSize="lg">Password</FormLabel>
+        isInvalid={formik.errors.email && formik.touched.email}>
+        <FormLabel fontSize="lg">Email</FormLabel>
         <Input
-          name="password"
+          name="email"
+          type="email"
+          placeholder="Enter Email"
+          autoComplete="off"
+          size="lg"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.email}
+        />
+        <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
+      </FormControl>
+      <FormControl
+        isInvalid={formik.errors.initialpass && formik.touched.initialpass}>
+        <FormLabel fontSize="lg">Enter Password</FormLabel>
+        <Input
+          name="initialpass"
           type="password"
           placeholder="Enter Password"
           autoComplete="off"
           size="lg"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          value={formik.values.password}
+          value={formik.values.initialpass}
         />
-        <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
+        <FormErrorMessage>{formik.errors.initialpass}</FormErrorMessage>
+      </FormControl>
+      <FormControl
+        isInvalid={formik.errors.confirmpass && formik.touched.confirmpass}>
+        <FormLabel fontSize="lg">Confirm Password</FormLabel>
+        <Input
+          name="confirmpass"
+          type="password"
+          placeholder="Confirm Password"
+          autoComplete="off"
+          size="lg"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.confirmpass}
+        />
+        <FormErrorMessage>{formik.errors.confirmpass}</FormErrorMessage>
       </FormControl>
       <ButtonGroup pt="1rem">
         <Button
           onClick={() => {
             navigate("/");
-          }}
-        >
+          }}>
           Back
         </Button>
         <Button colorScheme="teal" type="submit">
